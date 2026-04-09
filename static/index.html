@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Copycat - Internet Cloud Mode</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>☁️ Copycat Internet Cloud Mode</h1>
+            <p class="subtitle">Web Dashboard for File Transfer</p>
+        </header>
+
+        <!-- Status Panel -->
+        <section class="card status-panel">
+            <h2>📊 System Status</h2>
+            <div class="status-grid">
+                <div class="status-item">
+                    <span class="label">Ngrok:</span>
+                    <span id="ngrok-status" class="value status-offline">Stopped</span>
+                    <span id="ngrok-url" class="url"></span>
+                    <span id="ngrok-code" class="code"></span>
+                </div>
+                <div class="status-item">
+                    <span class="label">Relay Server:</span>
+                    <span id="relay-status" class="value status-offline">Stopped</span>
+                </div>
+                <div class="status-item">
+                    <span class="label">Connection:</span>
+                    <span id="connection-status" class="value status-offline">Disconnected</span>
+                </div>
+                <div class="status-item">
+                    <span class="label">Device ID:</span>
+                    <span id="device-id" class="value">Not registered</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Setup Panel -->
+        <section class="card setup-panel">
+            <h2>⚙️ Quick Setup</h2>
+            <div class="button-group">
+                <button id="btn-start-all" class="btn btn-primary" onclick="startAll()">
+                    🚀 Start Everything
+                </button>
+                <button id="btn-stop-all" class="btn btn-danger" onclick="stopAll()">
+                    ⏹️ Stop All
+                </button>
+            </div>
+            <div class="button-group">
+                <button class="btn btn-secondary" onclick="startNgrok()">
+                    Start Ngrok
+                </button>
+                <button class="btn btn-secondary" onclick="startRelay()">
+                    Start Relay Server
+                </button>
+            </div>
+        </section>
+
+        <!-- Ngrok Setup -->
+        <section class="card ngrok-panel">
+            <h2>🔗 Ngrok Configuration</h2>
+            <div class="form-group">
+                <label for="ngrok-authtoken">Ngrok Authtoken:</label>
+                <input type="password" id="ngrok-authtoken" placeholder="Enter your ngrok authtoken">
+                <small><a href="https://dashboard.ngrok.com/get-started/your-authtoken" target="_blank">Get authtoken here</a></small>
+            </div>
+            <button class="btn btn-secondary" onclick="saveNgrokToken()">
+                💾 Save Token
+            </button>
+        </section>
+
+        <!-- Device Registration -->
+        <section class="card registration-panel">
+            <h2>📱 Device Registration</h2>
+            <div class="form-group">
+                <label for="device-id-input">Your Device ID:</label>
+                <input type="text" id="device-id-input" placeholder="Enter your device ID">
+            </div>
+            <div class="form-group">
+                <label for="server-addr-input">Server Address (6-digit code or ngrok URL):</label>
+                <input type="text" id="server-addr-input" placeholder="e.g., 123456 or 4.tcp.eu.ngrok.io:12345">
+            </div>
+            <button class="btn btn-success" onclick="registerDevice()">
+                Register Device
+            </button>
+        </section>
+
+        <!-- Send File -->
+        <section class="card send-panel">
+            <h2>📤 Send File</h2>
+            <div class="form-group">
+                <label for="target-id-input">Target Device ID:</label>
+                <input type="text" id="target-id-input" placeholder="Enter target device ID">
+            </div>
+            <div class="form-group">
+                <label for="file-input">Select File:</label>
+                <input type="file" id="file-input">
+            </div>
+            <button class="btn btn-primary" onclick="sendFile()">
+                Send File
+            </button>
+            <div id="send-progress" class="progress-bar" style="display: none;">
+                <div class="progress-fill"></div>
+            </div>
+        </section>
+
+        <!-- Devices List -->
+        <section class="card devices-panel">
+            <h2>📋 Connected Devices</h2>
+            <button class="btn btn-secondary" onclick="refreshDevices()">
+                🔄 Refresh
+            </button>
+            <div id="devices-list" class="devices-list">
+                <p class="empty-message">No devices connected</p>
+            </div>
+        </section>
+
+        <!-- Received Files -->
+        <section class="card received-panel">
+            <h2>📥 Received Files</h2>
+            <button class="btn btn-secondary" onclick="refreshFiles()">
+                🔄 Refresh
+            </button>
+            <div id="files-list" class="files-list">
+                <p class="empty-message">No files received</p>
+            </div>
+        </section>
+
+        <!-- Video Streaming -->
+        <section class="card video-panel">
+            <h2>📹 Screen Streaming</h2>
+            <div class="form-group">
+                <label for="video-target-id">Target Device ID:</label>
+                <input type="text" id="video-target-id" placeholder="Enter target device ID">
+            </div>
+            <div class="button-group">
+                <button class="btn btn-primary" onclick="startVideoStream()">
+                    📺 Start Streaming
+                </button>
+                <button class="btn btn-danger" onclick="stopVideoStream()">
+                    ⏹️ Stop Streaming
+                </button>
+            </div>
+            <div id="video-status" class="video-status">
+                <span class="status-offline">Not streaming</span>
+            </div>
+            <div id="video-preview" class="video-preview">
+                <span class="placeholder">Video stream will appear here</span>
+                <img id="video-frame" src="" alt="Video stream" style="display:none;">
+            </div>
+        </section>
+
+        <!-- Notifications -->
+        <div id="notifications" class="notifications"></div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
